@@ -7903,27 +7903,84 @@ var _user$project$Zipcode$isValid = function (zipcode) {
 		5)) ? false : (A2(_elm_lang$core$String$all, _elm_lang$core$Char$isDigit, zipcode) ? true : true);
 };
 
-var _user$project$Main$update = F2(
-	function (msg, model) {
-		var _p0 = A2(_elm_lang$core$Debug$log, 'update', msg);
-		return _elm_lang$core$Native_Utils.update(
-			model,
-			{zipcodeEntry: _p0._0});
-	});
-var _user$project$Main$initialModel = {zipcode: _elm_lang$core$Maybe$Nothing, zipcodeEntry: ''};
-var _user$project$Main$Model = F2(
-	function (a, b) {
-		return {zipcode: a, zipcodeEntry: b};
-	});
-var _user$project$Main$ZipcodeChanged = function (a) {
-	return {ctor: 'ZipcodeChanged', _0: a};
+var _user$project$Main$inputField = function (_p0) {
+	var _p1 = _p0;
+	var _p2 = _p1.id;
+	return A2(
+		_elm_lang$html$Html$div,
+		_elm_lang$core$Native_List.fromArray(
+			[
+				_elm_lang$html$Html_Attributes$class('pure-control-group')
+			]),
+		_elm_lang$core$Native_List.fromArray(
+			[
+				A2(
+				_elm_lang$html$Html$label,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$for(_p2)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html$text(_p1.label)
+					])),
+				A2(
+				_elm_lang$html$Html$input,
+				_elm_lang$core$Native_List.fromArray(
+					[
+						_elm_lang$html$Html_Attributes$id(_p2),
+						_elm_lang$html$Html_Attributes$type$('text'),
+						_elm_lang$html$Html_Attributes$classList(
+						_elm_lang$core$Native_List.fromArray(
+							[
+								{ctor: '_Tuple2', _0: 'input-invalid', _1: _p1.invalid}
+							])),
+						_elm_lang$html$Html_Events$onInput(_p1.msg)
+					]),
+				_elm_lang$core$Native_List.fromArray(
+					[]))
+			]));
 };
-var _user$project$Main$view = function (model) {
+var _user$project$Main$inputForm = function (_p3) {
+	var _p4 = _p3;
+	var _p5 = _p4.disabled;
+	var submitButton = _elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$div,
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html_Attributes$class('pure-controls')
+				]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$button,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$classList(
+							_elm_lang$core$Native_List.fromArray(
+								[
+									{ctor: '_Tuple2', _0: 'pure-button', _1: true},
+									{ctor: '_Tuple2', _0: 'pure-button-primary', _1: true},
+									{ctor: '_Tuple2', _0: 'pure-button-disabled', _1: _p5}
+								])),
+							_elm_lang$html$Html_Attributes$type$('submit'),
+							_elm_lang$html$Html_Attributes$disabled(_p5)
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('Continue')
+						]))
+				]))
+		]);
 	return A2(
 		_elm_lang$html$Html$form,
 		_elm_lang$core$Native_List.fromArray(
 			[
-				_elm_lang$html$Html_Attributes$class('pure-form pure-form-aligned')
+				_elm_lang$html$Html_Attributes$class('pure-form pure-form-aligned'),
+				_elm_lang$html$Html_Events$onSubmit(_p4.onSubmit),
+				_elm_lang$html$Html_Attributes$disabled(_p5)
 			]),
 		_elm_lang$core$Native_List.fromArray(
 			[
@@ -7931,49 +7988,172 @@ var _user$project$Main$view = function (model) {
 				_elm_lang$html$Html$fieldset,
 				_elm_lang$core$Native_List.fromArray(
 					[]),
-				_elm_lang$core$Native_List.fromArray(
-					[
-						A2(
-						_elm_lang$html$Html$div,
-						_elm_lang$core$Native_List.fromArray(
-							[
-								_elm_lang$html$Html_Attributes$class('pure-control-group')
-							]),
-						_elm_lang$core$Native_List.fromArray(
-							[
-								A2(
-								_elm_lang$html$Html$label,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$for('zipcode')
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html$text('Zipcode')
-									])),
-								A2(
-								_elm_lang$html$Html$input,
-								_elm_lang$core$Native_List.fromArray(
-									[
-										_elm_lang$html$Html_Attributes$id('zipcode'),
-										_elm_lang$html$Html_Attributes$type$('text'),
-										_elm_lang$html$Html_Attributes$classList(
-										_elm_lang$core$Native_List.fromArray(
-											[
-												{
-												ctor: '_Tuple2',
-												_0: 'input-invalid',
-												_1: _elm_lang$core$Basics$not(
-													_user$project$Zipcode$isValid(model.zipcodeEntry))
-											}
-											])),
-										_elm_lang$html$Html_Events$onInput(_user$project$Main$ZipcodeChanged)
-									]),
-								_elm_lang$core$Native_List.fromArray(
-									[]))
-							]))
-					]))
+				A2(
+					_elm_lang$core$Basics_ops['++'],
+					A2(_elm_lang$core$List$map, _user$project$Main$inputField, _p4.fields),
+					submitButton))
 			]));
+};
+var _user$project$Main$update = F2(
+	function (msg, model) {
+		var _p6 = A2(_elm_lang$core$Debug$log, 'update', msg);
+		switch (_p6.ctor) {
+			case 'ZipcodeChanged':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{zipcodeEntry: _p6._0});
+			case 'SubmitZipcode':
+				return _user$project$Zipcode$isValid(model.zipcodeEntry) ? _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						zipcode: _elm_lang$core$Maybe$Just(model.zipcodeEntry)
+					}) : model;
+			case 'ChooseDepartmentType':
+				return _elm_lang$core$Native_Utils.update(
+					model,
+					{
+						departmentType: _elm_lang$core$Maybe$Just(_p6._0)
+					});
+			default:
+				return model;
+		}
+	});
+var _user$project$Main$initialModel = {zipcode: _elm_lang$core$Maybe$Nothing, zipcodeEntry: '', departmentType: _elm_lang$core$Maybe$Nothing};
+var _user$project$Main$Model = F3(
+	function (a, b, c) {
+		return {zipcode: a, zipcodeEntry: b, departmentType: c};
+	});
+var _user$project$Main$InputFieldModel = F4(
+	function (a, b, c, d) {
+		return {id: a, label: b, invalid: c, msg: d};
+	});
+var _user$project$Main$InputFormModel = F3(
+	function (a, b, c) {
+		return {onSubmit: a, fields: b, disabled: c};
+	});
+var _user$project$Main$SherriffDepartment = {ctor: 'SherriffDepartment'};
+var _user$project$Main$PoliceDepartment = {ctor: 'PoliceDepartment'};
+var _user$project$Main$debuggingModel = _elm_lang$core$Native_Utils.update(
+	_user$project$Main$initialModel,
+	{
+		zipcode: _elm_lang$core$Maybe$Just('12345'),
+		departmentType: _elm_lang$core$Maybe$Just(_user$project$Main$PoliceDepartment)
+	});
+var _user$project$Main$SubmitPoliceDepartment = {ctor: 'SubmitPoliceDepartment'};
+var _user$project$Main$PoliceTwitterChanged = function (a) {
+	return {ctor: 'PoliceTwitterChanged', _0: a};
+};
+var _user$project$Main$PoliceWebsiteChanged = function (a) {
+	return {ctor: 'PoliceWebsiteChanged', _0: a};
+};
+var _user$project$Main$PoliceChiefNameChanged = function (a) {
+	return {ctor: 'PoliceChiefNameChanged', _0: a};
+};
+var _user$project$Main$PoliceDepartmentNameChanged = function (a) {
+	return {ctor: 'PoliceDepartmentNameChanged', _0: a};
+};
+var _user$project$Main$ChooseDepartmentType = function (a) {
+	return {ctor: 'ChooseDepartmentType', _0: a};
+};
+var _user$project$Main$departmentTypeForm = A2(
+	_elm_lang$html$Html$div,
+	_elm_lang$core$Native_List.fromArray(
+		[
+			_elm_lang$html$Html_Attributes$class('pure-form')
+		]),
+	_elm_lang$core$Native_List.fromArray(
+		[
+			A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					_elm_lang$html$Html$text('Are you reporting information about a police department or a sheriff department?')
+				])),
+			A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$button,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('pure-button'),
+							_elm_lang$html$Html_Events$onClick(
+							_user$project$Main$ChooseDepartmentType(_user$project$Main$PoliceDepartment))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('Police Department')
+						]))
+				])),
+			A2(
+			_elm_lang$html$Html$p,
+			_elm_lang$core$Native_List.fromArray(
+				[]),
+			_elm_lang$core$Native_List.fromArray(
+				[
+					A2(
+					_elm_lang$html$Html$button,
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html_Attributes$class('pure-button'),
+							_elm_lang$html$Html_Events$onClick(
+							_user$project$Main$ChooseDepartmentType(_user$project$Main$SherriffDepartment))
+						]),
+					_elm_lang$core$Native_List.fromArray(
+						[
+							_elm_lang$html$Html$text('Sheriff Department')
+						]))
+				]))
+		]));
+var _user$project$Main$SubmitZipcode = {ctor: 'SubmitZipcode'};
+var _user$project$Main$ZipcodeChanged = function (a) {
+	return {ctor: 'ZipcodeChanged', _0: a};
+};
+var _user$project$Main$zipcodeForm = function (zipcodeEntry) {
+	var zipcodeIsInvalid = _elm_lang$core$Basics$not(
+		_user$project$Zipcode$isValid(zipcodeEntry));
+	return _user$project$Main$inputForm(
+		{
+			onSubmit: _user$project$Main$SubmitZipcode,
+			disabled: zipcodeIsInvalid,
+			fields: _elm_lang$core$Native_List.fromArray(
+				[
+					{id: 'zipcode', label: 'Zipcode', invalid: zipcodeIsInvalid, msg: _user$project$Main$ZipcodeChanged}
+				])
+		});
+};
+var _user$project$Main$view = function (model) {
+	var _p7 = model.zipcode;
+	if (_p7.ctor === 'Nothing') {
+		return _user$project$Main$zipcodeForm(model.zipcodeEntry);
+	} else {
+		var _p8 = model.departmentType;
+		if (_p8.ctor === 'Nothing') {
+			return _user$project$Main$departmentTypeForm;
+		} else {
+			if (_p8._0.ctor === 'PoliceDepartment') {
+				return _user$project$Main$inputForm(
+					{
+						disabled: true,
+						onSubmit: _user$project$Main$SubmitPoliceDepartment,
+						fields: _elm_lang$core$Native_List.fromArray(
+							[
+								{id: 'departmentName', label: 'Name of Police Department', invalid: false, msg: _user$project$Main$PoliceDepartmentNameChanged},
+								{id: 'policeChiefName', label: 'Name of Current Police Chief', invalid: false, msg: _user$project$Main$PoliceChiefNameChanged},
+								{id: 'policeWebsite', label: 'Website of Police Department', invalid: false, msg: _user$project$Main$PoliceWebsiteChanged},
+								{id: 'policeTwitter', label: 'Twitter of Police Department', invalid: false, msg: _user$project$Main$PoliceTwitterChanged}
+							])
+					});
+			} else {
+				return _elm_lang$html$Html$text('TODO: show Sheriff Department form');
+			}
+		}
+	}
 };
 var _user$project$Main$main = {
 	main: _elm_lang$html$Html_App$beginnerProgram(
